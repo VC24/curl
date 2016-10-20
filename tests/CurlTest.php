@@ -80,31 +80,6 @@ class CurlTest extends \PHPUnit_Framework_TestCase
 
 	}
 
-	public function testPostFilePathUpload()
-    {
-
-		$file_path = $this->get_png();
-
-		$data = array(
-				'key' => 'image',
-				'image' => '@' . $file_path,
-		);
-
-        $this->curl->setOpt(CURLOPT_RETURNTRANSFER, true);
-
-		$this->curl->post(self::TEST_URL . '/post_file_path_upload.php', $data);
-
-		$this->assertEquals(
-				array(
-						'request_method' => 'POST',
-						'key' => 'image',
-						'mime_content_type' => 'image/png'
-				),
-                json_decode($this->curl->response, true));
-
-		unlink($file_path);
-	}
-
 	public function testPutRequestMethod() {
 		$this->assertTrue($this->server('PUT', array(
 				'test' => 'server',
@@ -247,9 +222,4 @@ class CurlTest extends \PHPUnit_Framework_TestCase
 		return $tmp_file;
 	}
 
-	function get_png() {
-		$tmp_filename = tempnam('/tmp', 'php-curl-class.');
-		file_put_contents($tmp_filename, $this->create_png());
-		return $tmp_filename;
-	}
 }
